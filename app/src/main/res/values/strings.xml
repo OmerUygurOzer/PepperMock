@@ -3,4 +3,5 @@
     <string name="engineer_access">Engineer Access</string>
     <string name="new_greeting_hint">Enter New Greeting</string>
     <string name="add_greeting">Add</string>
+    <string name="save">Save</string>
 </resources>

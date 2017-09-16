@@ -8,4 +8,5 @@ public class PepperCommands {
     public static final String GREET = "pepper-greet";
     public static final String SHUTDOWN_SENSOR = "sensor-shutdown";
     public static final String UPDATE_VOCABULARY = "update-vocab";
+    public static final String NO_UI = "no-ui";
 }

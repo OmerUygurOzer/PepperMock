@@ -3,6 +3,7 @@ package com.example.omer.pepperapp.pepper;
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.util.Log;
 
 import com.example.omer.pepperapp.Bus;
 import com.example.omer.pepperapp.R;
@@ -17,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PepperAudioSpeaker extends UtteranceProgressListener implements Bus.Listener, TextToSpeech.OnInitListener, PepperComponent {
 
-    private static final int GREETINGS_RESET_CAP = 5;
+    private int GREETINGS_RESET_CAP = 5;
 
     private String[] greetings;
     private int greetingsUsed;
@@ -41,7 +42,9 @@ public class PepperAudioSpeaker extends UtteranceProgressListener implements Bus
 
         if(code.equals(PepperCommands.UPDATE_VOCABULARY)){
             ArrayList<String> newVocab = (ArrayList<String>)event;
-            return;
+            greetingsUsed = 0;
+            greetings = newVocab.toArray(new String[newVocab.size()]);
+            GREETINGS_RESET_CAP = greetings.length / 2;
         }
     }
 

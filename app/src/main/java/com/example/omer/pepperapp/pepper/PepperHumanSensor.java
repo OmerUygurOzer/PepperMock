@@ -42,15 +42,7 @@ public class PepperHumanSensor implements PepperComponent {
 
     private MediaRecorder createMediaRecorder(){
         MediaRecorder recorder = new MediaRecorder();
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        recorder.setOutputFile("/dev/null");
-        try {
-            recorder.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        prepareMediaRecorder(recorder);
         return recorder;
     }
 
@@ -62,12 +54,27 @@ public class PepperHumanSensor implements PepperComponent {
             if(mediaRecorder==null){
                 mediaRecorder = createMediaRecorder();
             }else {
-                mediaRecorder.reset();
+               prepareMediaRecorder(mediaRecorder);
             }
             mediaRecorder.start();
             getSoundCheckThread().start();
         }
     }
+
+    private void prepareMediaRecorder(MediaRecorder recorder){
+
+        recorder.reset();
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        recorder.setOutputFile("/dev/null");
+        try {
+            recorder.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void shutDown(){
         synchronized (ampCheckLock) {

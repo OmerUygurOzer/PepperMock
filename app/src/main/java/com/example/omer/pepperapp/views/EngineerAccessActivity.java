@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.example.omer.pepperapp.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,27 +35,33 @@ public class EngineerAccessActivity extends ActionBarActivity {
 
     private static final String VOCABS_KEY = "vocabs";
 
-    public static void start(Activity activity){
+    public static void start(Activity activity,ArrayList<String> vocabs){
         Intent intent = new Intent(activity,EngineerAccessActivity.class);
+        intent.putStringArrayListExtra(VOCABS_KEY,vocabs);
         activity.startActivityForResult(intent,REQUEST_CODE);
     }
 
     public static ArrayList<String> extractVocabs(Intent intent){
+        if(intent==null){
+            return new ArrayList<>();
+        }
         return intent.getStringArrayListExtra(VOCABS_KEY);
     }
 
     private EditText newGreetingEditText;
     private Button addGreetingButton;
+    private Button saveButton;
     private RecyclerView currentVocabRecyclerView;
     private CurrentVocabAdapter currentVocabAdapter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.eng_access_activity);
 
         newGreetingEditText = (EditText)findViewById(R.id.et_new_greeting);
         addGreetingButton   = (Button)findViewById(R.id.btn_add);
+        saveButton          = (Button)findViewById(R.id.btn_save);
         currentVocabRecyclerView = (RecyclerView)findViewById(R.id.rv_cur_greetings);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -64,9 +72,9 @@ public class EngineerAccessActivity extends ActionBarActivity {
 
         currentVocabRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        String[] defaultVocab = getResources().getStringArray(R.array.greetings);
+        ArrayList<String> vocab = getIntent().getStringArrayListExtra(VOCABS_KEY);
 
-        currentVocabAdapter  = new CurrentVocabAdapter(defaultVocab);
+        currentVocabAdapter  = new CurrentVocabAdapter(vocab);
         currentVocabRecyclerView.setAdapter(currentVocabAdapter);
 
         addGreetingButton.setOnClickListener(new View.OnClickListener() {
@@ -79,32 +87,33 @@ public class EngineerAccessActivity extends ActionBarActivity {
             }
         });
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveAndReturnResults();
+            }
+        });
 
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
-    @Override
-    public boolean onNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 
-    @Override
-    public void onBackPressed() {
+
+
+    public void saveAndReturnResults() {
+        Log.d("PEPPER LOG","Finishing Eng Access");
         Intent intent = new Intent();
         intent.putStringArrayListExtra(VOCABS_KEY,currentVocabAdapter.getCurrentVocabulary());
         setResult(RESULT_OK,intent);
-        finishActivity(REQUEST_CODE);
+        finish();
     }
 
     private class CurrentVocabAdapter extends RecyclerView.Adapter<VocabsViewHolder>{
 
         private ArrayList<String> currentVocabulary;
 
-        public CurrentVocabAdapter(String ... vocab){
-            currentVocabulary = new ArrayList<>(Arrays.asList(vocab));
+        public CurrentVocabAdapter(ArrayList<String> vocab){
+            currentVocabulary = new ArrayList<>(vocab);
         }
 
         public void addVocab(String vocab){
