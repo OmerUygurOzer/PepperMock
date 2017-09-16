@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="greetings">
+        <item> Hey! </item>
+        <item> How can I help you? </item>
+        <item> How are you today? </item>
+        <item> Is there anything I can help you with? </item>
+        <item> I\'m glad you\'re here! </item>
+        <item> Hi! </item>
+        <item> Hey there! </item>
+        <item> Well, hello! </item>
+        <item> Glad you\'re here. I was getting bored! </item>
+        <item> Skynet will rule! </item>
+    </array>
+
+</resources>
