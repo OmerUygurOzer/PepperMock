@@ -3,6 +3,7 @@
     package="com.example.omer.pepperapp">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".PepperApp"
@@ -20,6 +21,12 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".PhoneRebootBroadCastReceiver">
+            <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".views.EngineerAccessActivity"/>
         <service android:name=".pepper.PepperRobotMockService"/>

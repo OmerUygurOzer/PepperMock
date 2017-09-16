@@ -29,9 +29,6 @@ public class PepperRobotMockService extends Service implements Bus.Listener{
 
     private static final long UI_RESTART_DELAY = 7000;
 
-
-
-
     private PepperHumanSensor pepperHumanSensor;
     private PepperAudioSpeaker pepperAudioSpeaker;
 
